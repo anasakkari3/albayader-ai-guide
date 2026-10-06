@@ -67,3 +67,5 @@ footer { text-align: center; font-family: var(--font-display); color: var(--mute
 
 @media (min-width: 640px) { .threads { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .groups { display: grid; gap: 36px; }
+.card { scroll-margin-top: 16px; }
+.card:target { outline: 3px solid var(--accent); outline-offset: 2px; }

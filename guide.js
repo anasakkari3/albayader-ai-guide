@@ -53,6 +53,7 @@
 
   function card(p, i) {
     const box = el('article', 'card');
+    box.id = 'p-' + p.id; // deep link target for the per-slide QR codes
     const tools = el('div', 'tools');
     for (const id of p.tools) {
       const a = el('a', null, C.TOOLS[id].name);
