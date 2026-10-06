@@ -68,28 +68,41 @@
     btn.type = 'button';
     btn.id = 'copy-' + p.id;
     btn.addEventListener('click', () => copy(C.promptText(p.segments), prompt, btn));
-    box.append(el('h3', null, (i + 1) + '. ' + p.title), el('p', 'problem', p.problem), tools, prompt, btn, el('p', 'tip', p.tip));
+    box.append(el('h3', null, (i == null ? '' : (i + 1) + '. ') + p.title), el('p', 'problem', p.problem), tools, prompt, btn, el('p', 'tip', p.tip));
     return box;
   }
 
+  // Single-activity pages (p/<id>/) set data-only: one prompt, the threads, or the seven app prompts.
+  const only = document.querySelector('.page').dataset.only;
   const groups = document.querySelector('[data-prompt-groups]');
-  for (const g of C.GROUPS) {
+  function addGroup(title, id, prompts, numbered) {
     const section = el('section');
-    const h = el('h2', null, g.title);
-    h.id = 'group-' + g.id;
+    const h = el('h2', null, title);
+    h.id = 'group-' + id;
     section.setAttribute('aria-labelledby', h.id);
     const cards = el('div', 'cards');
-    C.PROMPTS.filter((p) => p.group === g.id).forEach((p, i) => cards.append(card(p, i)));
+    prompts.forEach((p, i) => cards.append(card(p, numbered ? i : null)));
     section.append(h, cards);
     groups.append(section);
   }
+  if (!only) {
+    for (const g of C.GROUPS) addGroup(g.title, g.id, C.PROMPTS.filter((p) => p.group === g.id), true);
+  } else if (only === 'apps') {
+    addGroup('التطبيقات السبعة', 'apps', C.APPS.map((a) => C.PROMPTS.find((p) => p.id === a.prompt)), true);
+  } else if (only !== 'threads') {
+    const p = C.PROMPTS.find((x) => x.id === only);
+    if (p) groups.append(card(p, null));
+  }
+  if (only && only !== 'threads') threads.closest('section').remove();
+  if (only === 'threads') groups.remove();
 
   // Cards are built here, after the browser's own jump to #p-…, so jump again (QR deep links).
   const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
   if (target) target.scrollIntoView({ block: 'start' });
 
   const rules = document.querySelector('[data-rules]');
-  for (const r of C.OWNERSHIP_RULES) {
+  if (only) rules.closest('section').remove();
+  else for (const r of C.OWNERSHIP_RULES) {
     const card = el('div', 'rule');
     card.append(el('h3', null, r.title), el('p', null, r.text));
     rules.append(card);
