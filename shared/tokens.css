@@ -1,0 +1,15 @@
+:root {
+  --bg: #ECE3D4;
+  --surface: #F7F2E9;
+  --ink: #1F2A44;
+  --muted: #6B6457;
+  --line: #DDD2BF;
+  --accent: #8E9BE0;
+  --gold: #C9A063;
+  --thread-role: #B5523B;
+  --thread-context: #2C7A6E;
+  --thread-task: #3D5A98;
+  --thread-format: #8A5A9E;
+  --font-display: 'Reem Kufi', 'Geeza Pro', sans-serif;
+  --font-body: 'IBM Plex Sans Arabic', 'Geeza Pro', sans-serif;
+}
