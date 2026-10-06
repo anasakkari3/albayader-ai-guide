@@ -84,6 +84,10 @@
     groups.append(section);
   }
 
+  // Cards are built here, after the browser's own jump to #p-…, so jump again (QR deep links).
+  const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (target) target.scrollIntoView({ block: 'start' });
+
   const rules = document.querySelector('[data-rules]');
   for (const r of C.OWNERSHIP_RULES) {
     const card = el('div', 'rule');
